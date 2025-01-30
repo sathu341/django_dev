@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}
+        Document {% endblock %}
+    </title>
+    <style>
+        *{
+    margin:0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+.header{
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:10px;
+    background-color: transparent;
+    height:90px;
+    position:fixed;
+    z-index: 99999;
+}
+.logo{
+    width:25%;
+    display: flex;
+    justify-content: center;
+    color:white;
+}
+.naves{
+    width:50%;
+    display: flex;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+}
+.signup{
+    width:25%;
+    display: flex;
+    justify-content: center;
+}
+.signup p a{
+    text-decoration: none;
+    padding:10px;
+    background-color: rgb(210 78 41);
+    color:white;
+    
+}
+.naves p a{
+    text-decoration: none;
+    color:white;
+
+}
+.banner{
+    background-image: url('/static/img/dishes_2.jpg');
+    background-repeat: no-repeat;
+    background-size:cover;
+    width:100%;
+    height: 590px;
+}
+.section{
+    position: relative;
+    
+}
+.wrapper{
+    position:relative;
+    margin-top:30px;
+    width:100%;
+   display:flex;
+   gap:10px;
+   flex-wrap: wrap;
+   padding:20px;
+   top:500px;
+   transition: top 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+ 
+  justify-content: center;
+
+
+}
+.items{
+    width:20%;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    height:356px;
+   gap:10px;
+    font-family: "Dancing Script", serif;
+  font-optical-sizing: auto;
+  font-weight:200px;
+  font-style: normal;
+}
+.items img{
+    border-radius:50%;
+    width:60%;
+    height:150px;
+
+}
+.about{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position:relative;
+    top:500px;
+    transition:top 2s cubic-bezier(0.165, 0.84, 0.44, 1)
+}
+.aboutmain{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows:repeat(1,auto);
+    gap:10px 10px;
+
+}
+.aboutmain .aboutimg img {
+    width:100%;
+    height:250px;
+    
+}
+.abouttext{
+    text-align: justify;
+    font-size: 17px;
+    padding:20px;
+}
+    </style>
+    <link rel="stylesheet" href="{% static 'css/restuarent.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <h3>Logo</h3>
+            <img src=""/>
+        </div>
+        <div class="naves">
+            <p>
+                <a href="">Home</a>
+            </p>
+            <p>
+                <a href="#about">Aboutus</a>
+            </p>
+         
+            <p>
+                <a href="">Signin</a>
+            </p>
+
+        </div>
+        <div class="signup">
+            <p>
+                <a href="">Signup</a>
+            </p>
+        </div>
+    </div>
+    <div class="section">
+            <div class="banner">
+
+            </div>
+           
+            <p id="about">
+                &nbsp;
+            </p>
+            <p>
+                &nbsp;
+            </p>
+            <div class="about" >
+                <h2>About Us</h2>
+                <div class="aboutmain">
+                    <div class="abouttext">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                    </div>
+                    <div class="aboutimg">
+                        <img src="{% static 'img/dishes_5.jpg' %}" alt="" />
+                    </div>
+                </div>
+               
+            </div>
+            <p>
+                &nbsp;
+            </p>
+            <p>
+                &nbsp;
+            </p>
+            <div class="wrapper">
+                {% for  item in items %}
+                <div class="items">
+                    {% if item.photo %}
+                <img src="{{ item.photo.url }}" alt="{{ item.name }}">
+                {% else %}
+                <img src="https://via.placeholder.com/300" class="card-img-top" alt="No Image Available">
+                {% endif %}
+                <h5 class="card-title">{{ item.name }}</h5>
+                    
+                    
+                    <p class="card-text"><strong>Price:</strong> ₹{{ item.price }}</p>
+                    <p class="card-text"><strong>Available:</strong> {% if item.is_available %} ✅ Yes {% else %} ❌ No {% endif %}</p>
+                    <details>
+                        <summary>More Detail</summary>
+                        <p class="card-text"><strong>Spice Level:</strong> {{ item.spice_level }}</p>
+                        <p class="card-text"><strong>Cuisine:</strong> {{ item.cuisine }}</p>
+                        <p class="card-text"><strong>Description:</strong> {{ item.description }}</p>
+                    </details>
+                  
+                    
+                </div>
+                {% empty %}
+                <p class="text-muted">No items available.</p>
+                {% endfor %}
+               
+            </div>
+            <!--footer-->
+            <div class="footer">
+                <p> 
+                  copyright2025
+                </p>
+            </div>
+    </div>
+<script>
+
+window.addEventListener('scroll', function () {
+    // Get the current scroll position
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    console.log(`Current scroll position: ${scrollTop}px`);
+
+    // Example: Change the background color of a header when scrolling
+    const header = document.querySelector('.header');
+    const wrapper=document.querySelector('.wrapper');
+    const about=document.querySelector(".about");
+    if (scrollTop > 100) {
+        header.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    } else {
+        header.style.backgroundColor = 'transparent';
+    }
+    if(scrollTop > 450){
+        wrapper.style.top="0";
+        
+    }
+    else if(scrollTop < 450){
+        wrapper.style.top="500px";
+    }
+    if(scrollTop > 200){
+        about.style.top="0";
+    }
+    else if(scrollTop < 400){
+        about.style.top="500px";
+    }
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

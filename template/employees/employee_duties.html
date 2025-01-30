@@ -1,0 +1,40 @@
+{% extends "employees/emphome.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Employee Duty Assignments</h2>
+    
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Employee Name</th>
+                <th>Role</th>
+                <th>Assigned Menu Date</th>
+                <th>Menu Items</th>
+                <th>Assigned At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for assignment in assignments %}
+            <tr>
+                <td>{{ assignment.employee.name }}</td>
+                <td>{{ assignment.get_role_display }}</td>
+                <td>{{ assignment.menu.date }}</td>
+                <td>
+                    <ul class="list-unstyled">
+                        {% for item in assignment.menu.items.all %}
+                            <li>{{ item.name }} - ₹{{ item.price }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ assignment.assigned_at|date:"d M Y, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No assignments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
