@@ -2,7 +2,10 @@
     "builds":[{
         "src":"tip_prediction/wsgi.py",
         "use":"@vercel/python",
-        "config":{"maxLamdaSize":"15mb","runtime":"python3.9"}
+        "config":{"maxLamdaSize":"15mb","runtime":"python3.10"},
+        "env": {
+            "PYTHON_VERSION": "3.10"
+          }
     }],
     "routes":[
         {
