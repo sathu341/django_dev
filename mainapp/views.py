@@ -32,12 +32,15 @@ def empLogin(request):
         emailid=request.POST.get("eml")
         password=request.POST.get("password")
         obj=Employee.objects.filter(email=emailid).first()
-        if obj:
-            request.session["empid"]=obj.id
-            request.session["empname"]=obj.name
-            return render(request,'employees/emphome.html',{'photo':obj.photo,"empname":obj.name})
+        if obj.is_active:
+            if obj:
+                request.session["empid"]=obj.id
+                request.session["empname"]=obj.name
+                return render(request,'employees/emphome.html',{'photo':obj.photo,"empname":obj.name})
+            else:
+                return render(request,'employees/empllogin.html',{'message':"invalid entery"})
         else:
-            return render(request,'employees/empllogin.html',{'message':"invalid entery"})
+             return render(request,'employees/empllogin.html',{'message':"Admin is not Approved"})    
 
 
     return render(request,'employees/empllogin.html',{"message":""})
@@ -79,7 +82,7 @@ def add_employee(request):
             # send_mail(subject, message, from_email, recipient_list)
             res=send_mail(subject,message,settings.EMAIL_HOST_USER,recipient_list)
 
-            return redirect('employee_list')
+            return redirect('emplogin')
     else:
         form = EmployeeForm()
 
@@ -114,6 +117,9 @@ def index(request):
 def item_list(request):
     items = IndianRestaurantItem.objects.all()
     return render(request, 'items/item_list.html', {'items': items})
+def moreDetail(request,itemid):
+    items = IndianRestaurantItem.objects.filter(id=itemid)
+    return render(request, 'more_detail.html', {'items': items})
 def predict_tip_view(request):
     if request.method == 'POST':
         form = TipPredictionForm(request.POST)

@@ -83,11 +83,12 @@ class Employee(models.Model):
     shift = models.CharField(max_length=10, choices=SHIFT_CHOICES)  # Assigned work shift
     date_of_joining = models.DateField()  # Joining date
     address = models.TextField(blank=True, null=True)  # Employee's address
-    is_active = models.BooleanField(default=True)  # Employment status
+    is_active = models.BooleanField(default=False)  # Employment status
     photo = models.ImageField(upload_to="restaurant/items/", blank=True, null=True)  
     created_at = models.DateTimeField(auto_now_add=True)  # Record creation timestamp
     updated_at = models.DateTimeField(auto_now=True)  # Record update timestamp
     password=models.CharField(max_length=100,default='password')
+    
 
     def __str__(self):
         return f"{self.name} - {self.role.capitalize()}"

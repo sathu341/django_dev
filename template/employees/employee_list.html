@@ -14,7 +14,7 @@
                 <th>Phone</th>
                 <th>Salary</th>
                 <th>Photo</th>
-                <th>Actions</th>
+                <!-- <th>Actions</th> -->
             </tr>
         </thead>
         <tbody>
@@ -32,10 +32,10 @@
                         <span class="text-muted">No Image</span>
                     {% endif %}
                 </td>
-                <td>
+                <!-- <td>
                     <a href="{% url 'edit_employee' employee.id %}" class="btn btn-primary btn-sm">Edit</a>
                     <a href="{% url 'delete_employee' employee.id %}" class="btn btn-danger btn-sm">Delete</a>
-                </td>
+                </td> -->
             </tr>
             {% empty %}
             <tr>

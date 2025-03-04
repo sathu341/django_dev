@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import predict_tip_view,index,item_list,employee_list, add_employee, edit_employee, delete_employee,employee_duties,empLogin,empHome
+from .views import predict_tip_view,index,item_list,employee_list, add_employee, edit_employee, delete_employee,employee_duties,empLogin,empHome,moreDetail
 
 urlpatterns = [
   path('/predict', predict_tip_view, name='predict_tip'),
@@ -11,5 +11,6 @@ urlpatterns = [
     path('delete/<int:employee_id>/', delete_employee, name='delete_employee'),
      path('duties/', employee_duties, name='employee_duties'),
      path('emplogin/',empLogin,name="empLogin"),
-     path("emphome/",empHome,name="emphome")
+     path("emphome/",empHome,name="emphome"),
+     path("moredetail/<int:itemid>/",moreDetail,name="moreDetail"),
 ]
