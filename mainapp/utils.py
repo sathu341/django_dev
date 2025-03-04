@@ -10,7 +10,7 @@ import joblib
 EXCHANGE_RATE = 83
 
 # Load dataset
-data = pd.read_csv('C:/waiterproject/tips.csv')
+data = pd.read_csv('C:/collegeproject/waiterproject/tip_prediction/tips.csv')
 
 # Convert monetary values to INR
 data['total_bill'] *= EXCHANGE_RATE

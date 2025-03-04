@@ -36,4 +36,5 @@ class EmployeeForm(forms.ModelForm):
             'date_of_joining': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'photo': forms.FileInput(attrs={'class': 'form-control'}),
+           
         }

@@ -65,19 +65,19 @@ def add_employee(request):
             password = generate_password()
 
             # Create a new user for the employee (assuming email is the username)
-            user = User.objects.create_user(username=employee.email, password=password)
-            user.first_name = employee.first_name  # Optionally set additional fields
-            user.last_name = employee.last_name
+            user = Employee.objects.filter(email=employee.email).last()
+            user.password=password
             user.save()
 
             # Send email with login credentials
             subject = "Your Account Information"
-            message = f"Hello {employee.first_name},\n\nYour account has been created successfully.\n\n" \
+            message = f"Hello {employee.name},\n\nYour account has been created successfully.\n\n" \
                       f"Your username is: {employee.email}\nYour password is: {password}\n\n" \
                       f"Please change your password after logging in."
-            from_email = settings.DEFAULT_FROM_EMAIL
+            # from_email = settings.DEFAULT_FROM_EMAIL
             recipient_list = [employee.email]
-            send_mail(subject, message, from_email, recipient_list)
+            # send_mail(subject, message, from_email, recipient_list)
+            res=send_mail(subject,message,settings.EMAIL_HOST_USER,recipient_list)
 
             return redirect('employee_list')
     else:
