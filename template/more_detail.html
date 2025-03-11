@@ -2,8 +2,6 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="mb-4">Restaurant</h2>
-
-    
     <div class="row">
         {% for item in items %}
         <div class="col-md-4">
@@ -14,16 +12,18 @@
                 <img src="https://via.placeholder.com/300" class="card-img-top" alt="No Image Available">
                 {% endif %}
                 <div class="card-body">
-                    <form action="" method="post">
                     <h5 class="card-title">{{ item.name }}</h5>
                     <p class="card-text"><strong>Cuisine:</strong> {{ item.cuisine }}</p>
                     <p class="card-text"><strong>Spice Level:</strong> {{ item.spice_level }}</p>
-                    <p class="card-text"><strong>Price:</strong> ₹{{ item.price }}</p>
-                    Quantity:<button type="button" id="plus">+</button><input  type="number" name="qty" min="1" style="width:30px;"/><button type="button" id="minus">-</button>
+                    <p class="card-text"><strong>Price:</strong> ₹<span class="price">{{ item.price }}</span></p>
+                    <p>Quantity: 
+                        <button type="button" class="minus btn btn-danger">-</button>
+                        <input type="number" class="qty" min="1" style="width: 50px; text-align: center;" value="1" data-price="{{ item.price }}" />
+                        <button type="button" class="plus btn btn-success">+</button>
+                    </p>
                     <p class="card-text"><strong>Available:</strong> {% if item.is_available %} ✅ Yes {% else %} ❌ No {% endif %}</p>
                     <p class="card-text"><strong>Description:</strong> {{ item.description }}</p>
-                    <button class="btn btn-success"> Buy</button>
-                </form>
+                    <button class="btn btn-success open-modal" data-bs-toggle="modal" data-bs-target="#addressModal" data-item="{{ item.name }}" data-price="{{ item.price }}"> Buy</button>
                 </div>
             </div>
         </div>
@@ -32,14 +32,78 @@
         {% endfor %}
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded",()=>{
-        let plus=document.querySelector("#plus");
-        let minus=document.querySelector("#minus");
-        let qty=document.querySelector("input[name='qty']");
-        plus.addEventListener('click',()=>{
+
+<!-- Modal for Delivery Address -->
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addressModalLabel">Enter Delivery Address</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="orderForm" method="post" action="{% url 'create_order' %}">
+          {% csrf_token %}
+     
+          {% for ite in items %}
+            <input  type="hidden" id="itemid" name="item_id" value="{{ite.id}}"/>
+            {% endfor %}
+          <input type="hidden" id="orderItem" name="item_name" />
+          <input type="hidden" id="orderQty" name="quantity" />
+          <input type="hidden" id="orderPrice" name="total_price" />
+          <div class="mb-3">
+       
+            <label for="deliveryAddress" class="form-label">Address</label>
             
-        })
-    })
+            <textarea class="form-control" id="deliveryAddress" name="address" rows="3" required></textarea>
+          </div>
+          <button id="rzp-button1" type="submit" class="btn btn-primary">Confirm Order</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".card").forEach(card => {
+            let qty = card.querySelector(".qty");
+            let price = card.querySelector(".price");
+            let plus = card.querySelector(".plus");
+            let minus = card.querySelector(".minus");
+            let basePrice = parseFloat(qty.getAttribute("data-price"));
+
+            plus.addEventListener("click", () => {
+                qty.value = parseInt(qty.value) + 1;
+                price.textContent = (basePrice * qty.value).toFixed(2);
+            });
+
+            minus.addEventListener("click", () => {
+                if (parseInt(qty.value) > 1) {
+                    qty.value = parseInt(qty.value) - 1;
+                    price.textContent = (basePrice * qty.value).toFixed(2);
+                }
+            });
+        });
+
+        document.querySelectorAll(".open-modal").forEach(button => {
+            button.addEventListener("click", function() {
+                let itemName = this.getAttribute("data-item");
+                let itemPrice = parseFloat(this.getAttribute("data-price"));
+                let quantity =parseInt(document.querySelector(".qty").value);
+                let totalPrice = itemPrice * quantity;
+
+                document.getElementById("orderItem").value = itemName;
+                document.getElementById("orderQty").value = quantity;
+                document.getElementById("orderPrice").value =totalPrice;
+                document.getElementById("addressModalLabel").textContent = `Enter Delivery Address for ${itemName}`;
+            });
+        });
+
+
+       
+    });
 </script>
+
+
 {% endblock %}

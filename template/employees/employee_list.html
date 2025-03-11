@@ -12,7 +12,7 @@
                 <th>Role</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Salary</th>
+             
                 <th>Photo</th>
                 <!-- <th>Actions</th> -->
             </tr>
@@ -24,7 +24,7 @@
                 <td>{{ employee.role }}</td>
                 <td>{{ employee.email }}</td>
                 <td>{{ employee.phone_number }}</td>
-                <td>₹{{ employee.salary }}</td>
+              
                 <td>
                     {% if employee.photo %}
                         <img src="{{ employee.photo.url }}" alt="Profile Photo" width="50">

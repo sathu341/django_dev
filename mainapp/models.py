@@ -79,9 +79,9 @@ class Employee(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)  # Job role
     email = models.EmailField(unique=True)  # Contact email
     phone_number = models.CharField(max_length=15, unique=True)  # Contact phone number
-    salary = models.DecimalField(max_digits=8, decimal_places=2)  # Monthly salary
-    shift = models.CharField(max_length=10, choices=SHIFT_CHOICES)  # Assigned work shift
-    date_of_joining = models.DateField()  # Joining date
+    salary = models.DecimalField(max_digits=8, decimal_places=2,default='20000')  # Monthly salary
+    shift = models.CharField(max_length=10, choices=SHIFT_CHOICES,default='morning')  # Assigned work shift
+    date_of_joining = models.DateField(auto_now=True)  # Joining date
     address = models.TextField(blank=True, null=True)  # Employee's address
     is_active = models.BooleanField(default=False)  # Employment status
     photo = models.ImageField(upload_to="restaurant/items/", blank=True, null=True)  
@@ -131,3 +131,13 @@ class MenuEmployeeAssignment(models.Model):
 
     class Meta:
         unique_together = ('menu', 'employee', 'role')  # Prevent duplicate assignments for the same role and menu
+
+class Order(models.Model):
+    item=models.ForeignKey(IndianRestaurantItem,on_delete=models.CASCADE)
+    total_amount=models.CharField(max_length=100)
+    quantity=models.CharField(max_length=100)
+    adddress=models.TextField(max_length=100)
+    status=models.CharField(max_length=100,default='pending')
+
+    def __str__(self):
+        return f'item name:${self.item.name}'

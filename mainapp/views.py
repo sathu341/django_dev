@@ -2,14 +2,14 @@ from django.shortcuts import render
 import pickle
 import numpy as np
 
-
+from django.contrib import messages
 # Load the trained model
 from django.shortcuts import render
 from .forms import TipPredictionForm
 from .utils import predict_tip
 from .models import IndianRestaurantItem
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Employee,MenuEmployeeAssignment
+from .models import Employee,MenuEmployeeAssignment,Order
 from .forms import EmployeeForm
 from django.core.mail import send_mail
 import random
@@ -82,7 +82,7 @@ def add_employee(request):
             # send_mail(subject, message, from_email, recipient_list)
             res=send_mail(subject,message,settings.EMAIL_HOST_USER,recipient_list)
 
-            return redirect('emplogin')
+            return redirect('/emplogin/')
     else:
         form = EmployeeForm()
 
@@ -138,3 +138,45 @@ def predict_tip_view(request):
         form = TipPredictionForm()
     return render(request, 'tip_predictor/predict_tip.html', {'form': form})
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Order, IndianRestaurantItem
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from .models import Order, IndianRestaurantItem
+
+def create_order(request):
+    if request.method == "POST":
+        item_id = request.POST.get("item_id")
+        item = get_object_or_404(IndianRestaurantItem, id=item_id)
+
+        quantity = request.POST.get("quantity", 1)
+        total_price =request.POST.get("total_price", 0)
+        address = request.POST.get("address")
+
+        # Check if an order already exists
+        existing_order = Order.objects.filter(item=item, adddress=address).exists()
+
+        if existing_order:
+            messages.info(request, "Order already exists.")
+            return redirect("/")  # Redirect to order list page
+
+        # Create new order
+        order = Order.objects.create(
+            item=item,
+            quantity=quantity,
+            total_amount=total_price,
+            adddress=address  # Fixed the typo from 'adddress' to 'address'
+        )
+
+        messages.success(request, "Your order has been placed successfully!")
+        return render(request, "order_place.html", {"order": order})
+
+    return redirect("/")  # Redirect to homepage if method is not POST
+
+
+
+def order_list(request):
+    orders = Order.objects.all().order_by("-id")
+    return render(request, "orders.html", {"orders": orders})
